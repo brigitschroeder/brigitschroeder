@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const investigations = await getCollection('investigations');
+  return investigations.map((inv) => ({
+    params: { slug: inv.id },
+    props: { inv },
+  }));
+}
+
+const { inv } = Astro.props;
+const { Content } = await render(inv);
+const { number, title, status, date, tags, question, hypothesis, dataset } = inv.data;
+---
+<BaseLayout title={title}>
+  <article>
+    <header class="inv-header">
+      <div class="inv-meta">
+        <span class="inv-number">Investigation #{String(number).padStart(3, '0')}</span>
+        <span class={`status status-${status}`}>{status.replace('-', ' ')}</span>
+      </div>
+      <h1>{title}</h1>
+      <time>{date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+      <div class="tags">
+        {tags.map(tag => <span class="tag">{tag}</span>)}
+      </div>
+    </header>
+
+    <div class="summary-box">
+      <div class="summary-row">
+        <span class="summary-label">Question</span>
+        <span class="summary-value">{question}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Hypothesis</span>
+        <span class="summary-value">{hypothesis}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Dataset</span>
+        <span class="summary-value">{dataset}</span>
+      </div>
+    </div>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <nav class="back-link">
+    <a href="/investigations">&larr; All Investigations</a>
+  </nav>
+</BaseLayout>
+
+<style>
+  .inv-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
+  .inv-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .inv-number { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted); }
+  h1 { margin-bottom: 0.5rem; }
+  time { font-size: 0.85rem; color: var(--color-text-muted); display: block; margin-bottom: 0.75rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .summary-box {
+    background: var(--color-accent-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .summary-row { display: grid; grid-template-columns: 100px 1fr; gap: 1rem; align-items: start; }
+  .summary-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent); padding-top: 0.1rem; }
+  .summary-value { font-family: var(--font-serif); font-size: 0.95rem; line-height: 1.6; }
+
+  .back-link { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: 0.9rem; }
+</style>

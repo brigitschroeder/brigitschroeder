@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const investigations = (await getCollection('investigations'))
+  .sort((a, b) => a.data.number - b.data.number);
+---
+<BaseLayout title="Investigations">
+  <h1>Investigations</h1>
+  <p class="intro">One hundred real investigations into public healthcare data. Each one starts with a question I don't know the answer to.</p>
+
+  <ul class="inv-list">
+    {investigations.map((inv) => (
+      <li>
+        <a href={`/investigations/${inv.id}`} class="inv-card">
+          <div class="inv-meta">
+            <span class="inv-number">#{String(inv.data.number).padStart(3, '0')}</span>
+            <span class={`status status-${inv.data.status}`}>{inv.data.status.replace('-', ' ')}</span>
+          </div>
+          <div class="inv-title">{inv.data.title}</div>
+          <div class="inv-question">{inv.data.question}</div>
+          <div class="inv-tags">
+            {inv.data.tags.map(tag => <span class="tag">{tag}</span>)}
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  h1 { margin-bottom: 0.5rem; }
+  .intro { font-family: var(--font-serif); color: var(--color-text-muted); margin-bottom: 2.5rem; font-size: 1.05rem; }
+
+  .inv-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .inv-card {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .inv-card:hover { border-color: var(--color-accent); box-shadow: 0 2px 8px rgba(37,99,235,0.08); }
+  .inv-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem; }
+  .inv-number { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); }
+  .inv-title { font-weight: 600; font-size: 1.05rem; margin-bottom: 0.35rem; }
+  .inv-question { font-family: var(--font-serif); font-size: 0.95rem; color: var(--color-text-muted); margin-bottom: 0.75rem; }
+  .inv-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+</style>

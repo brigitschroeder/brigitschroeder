@@ -1,11 +1,86 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const investigations = (await getCollection('investigations'))
+  .sort((a, b) => a.data.number - b.data.number)
+  .slice(0, 3);
+
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
+<BaseLayout title="Home">
+  <section class="hero">
+    <h1>One Hundred Investigations</h1>
+    <p class="subtitle">A research notebook documenting one hundred real investigations into public healthcare data — using SQL, Python, statistics, and plain language.</p>
+    <p class="byline">By <a href="/about">Brigit Schroeder</a></p>
+  </section>
 
-<Layout>
-	<Welcome />
-</Layout>
+  <section class="recent">
+    <div class="section-header">
+      <h2>Recent Investigations</h2>
+      <a href="/investigations">View all &rarr;</a>
+    </div>
+    <ul class="card-list">
+      {investigations.map((inv) => (
+        <li>
+          <a href={`/investigations/${inv.id}`} class="card">
+            <span class="card-number">#{String(inv.data.number).padStart(3, '0')}</span>
+            <span class="card-title">{inv.data.title}</span>
+            <span class={`status status-${inv.data.status}`}>{inv.data.status.replace('-', ' ')}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {notes.length > 0 && (
+    <section class="recent">
+      <div class="section-header">
+        <h2>Recent Notes</h2>
+        <a href="/notes">View all &rarr;</a>
+      </div>
+      <ul class="card-list">
+        {notes.map((note) => (
+          <li>
+            <a href={`/notes/${note.id}`} class="card">
+              <span class="card-title">{note.data.title}</span>
+              <span class="card-date">{note.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--color-border); }
+  .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  .subtitle { font-family: var(--font-serif); font-size: 1.15rem; color: #3a3a3a; line-height: 1.7; max-width: 600px; margin-bottom: 0.75rem; }
+  .byline { font-size: 0.9rem; color: var(--color-text-muted); }
+
+  .recent { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; }
+  .section-header h2 { margin: 0; border: none; padding: 0; }
+  .section-header a { font-size: 0.85rem; }
+
+  .card-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: var(--color-accent); box-shadow: 0 1px 4px rgba(37,99,235,0.08); }
+  .card-number { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); white-space: nowrap; }
+  .card-title { flex: 1; font-weight: 500; }
+  .card-date { font-size: 0.8rem; color: var(--color-text-muted); white-space: nowrap; }
+</style>

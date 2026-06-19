@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="Notes">
+  <h1>Notes</h1>
+  <p class="intro">Short posts — things I learned today, papers I read, SQL tricks, and ideas worth writing down.</p>
+
+  {notes.length === 0 ? (
+    <p class="empty">Notes coming soon.</p>
+  ) : (
+    <ul class="note-list">
+      {notes.map((note) => (
+        <li>
+          <a href={`/notes/${note.id}`} class="note-card">
+            <span class="note-title">{note.data.title}</span>
+            <span class="note-date">{note.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
+
+<style>
+  h1 { margin-bottom: 0.5rem; }
+  .intro { font-family: var(--font-serif); color: var(--color-text-muted); margin-bottom: 2.5rem; font-size: 1.05rem; }
+  .empty { color: var(--color-text-muted); font-style: italic; }
+  .note-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .note-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color 0.15s;
+  }
+  .note-card:hover { border-color: var(--color-accent); }
+  .note-title { font-weight: 500; }
+  .note-date { font-size: 0.8rem; color: var(--color-text-muted); white-space: nowrap; }
+</style>
