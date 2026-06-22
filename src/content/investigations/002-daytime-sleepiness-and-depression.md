@@ -15,7 +15,7 @@ Do people who feel overly sleepy during the day report more depressive symptoms?
 
 ## Key Finding
 
-Adults who reported feeling excessively sleepy during the day more frequently had higher average PHQ-9 depression scores, with a moderate positive correlation (Spearman r = 0.397). Daytime sleepiness frequency explained about 16% of the variance in depression scores.
+Adults who reported feeling excessively sleepy during the day tended to report substantially higher depression scores. Sleepiness frequency showed a moderate correlation with PHQ-9 scores (Spearman r = 0.397) and explained about 16% of the variation in depression severity.
 
 ## Initial Hypothesis
 
@@ -41,14 +41,14 @@ The PHQ-9 total score was calculated as the sum of DPQ010–DPQ090 (nine items, 
 
 ### Correlation
 
-Spearman correlation was used as the primary measure because both variables are ordinal and PHQ-9 scores are heavily right-skewed. Pearson correlation is reported for comparison.
+Spearman correlation was used as the primary measure because both variables are ordinal and PHQ-9 scores are heavily right-skewed. Pearson correlation is included because it is the most commonly reported correlation coefficient, allowing comparison with studies that assume continuous variables.
 
 | Method | r | p-value |
 |--------|-------|---------|
 | Pearson | 0.359 | <0.0001 |
 | Spearman | 0.397 | <0.0001 |
 
-Both correlations are positive and in the moderate range (0.30–0.50). People who experience daytime sleepiness more frequently tend to report higher depression scores. Both p-values are essentially zero, reflecting both the strength of the relationship and the large sample size.
+Both correlations are positive and in the moderate range (0.30–0.50). People who experience daytime sleepiness more frequently tend to report higher depression scores. Both associations were highly statistically significant (p < 0.0001), reflecting both the strength of the relationship and the large sample size.
 
 ![Box plot of PHQ-9 scores by daytime sleepiness level](/images/002-sleep-boxplot.png)
 
@@ -56,7 +56,7 @@ The box plot makes the trend visible: median PHQ-9 scores climb steadily from 0 
 
 ### Regression
 
-To model *how much* daytime sleepiness explains depression severity, a linear regression was run with SLQ120 as the predictor and PHQ-9 score as the outcome. Because PHQ-9 scores are right-skewed with many zeros, the outcome was log-transformed using `log(phq9 + 1)` before fitting the model.
+To estimate how PHQ-9 changes across increasing levels of daytime sleepiness, a linear regression was run with SLQ120 as the predictor and PHQ-9 score as the outcome. Because PHQ-9 scores are right-skewed with many zeros, the outcome was log-transformed using `log(phq9 + 1)` before fitting the model.
 
 | Statistic | Value |
 |-----------|-------|
@@ -66,9 +66,9 @@ To model *how much* daytime sleepiness explains depression severity, a linear re
 | R² | 0.158 |
 | p-value | <0.0001 |
 
-**R² = 0.158**: about **16% of the variation in PHQ-9 scores is explained by daytime sleepiness frequency.** The remaining 84% reflects factors not captured in this model. For a single-variable model in behavioral health data, 16% is a meaningful but modest result.
+**R² = 0.158**: about **16% of the variation in PHQ-9 scores is explained by daytime sleepiness frequency.** The remaining 84% reflects factors not captured in this model. 
 
-The slope of 0.311 means that each one-unit increase in sleepiness frequency (e.g., going from "Rarely" to "Sometimes") is associated with a 0.311-unit increase in log-transformed PHQ-9 score.
+In behavioral and public health research, where outcomes are influenced by many biological, psychological, and social factors, a single predictor explaining roughly 16% of the variability is noteworthy.
 
 ![Regression of PHQ-9 on daytime sleepiness](/images/002-sleep-regression.png)
 
@@ -76,7 +76,7 @@ Four of the five group means sit close to the regression line. The "Never" group
 
 ## Limitations
 
-**Heteroscedasticity.** The spread of residuals is not constant across predicted values — it decreases as sleepiness increases. This violates the homoscedasticity assumption of linear regression. The log transformation reduced the problem but did not eliminate it. The regression coefficients are still valid estimates of the relationship, but the standard errors (and therefore confidence intervals) should be interpreted with caution.
+**Heteroscedasticity.** The spread of residuals is not constant across predicted values — it decreases as sleepiness increases. This violates the homoscedasticity assumption of linear regression. The log transformation reduced the problem but did not eliminate it. Under ordinary least squares, the coefficient estimates remain unbiased if the usual assumptions hold, but heteroscedasticity can make the standard errors unreliable. Robust standard errors would provide more trustworthy inference.
 
 **Single-variable model.** Daytime sleepiness and depression are both influenced by many overlapping factors — chronic illness, medication side effects, age, lifestyle. This model controls for none of them. The 84% of unexplained variance is a reminder of how much is left out.
 
@@ -84,7 +84,7 @@ Four of the five group means sit close to the regression line. The "Never" group
 
 **Sample representativeness.** The 628 participants who completed the sleep questionnaire but not the depression screener were excluded. If these individuals differ systematically from those who completed both (e.g., due to health status or survey fatigue), the results may not generalize to the full NHANES sample.
 
-**Ordinal predictor treated as continuous.** SLQ120 has five ordered levels, not a true numeric scale. Treating it as continuous in a linear regression assumes equal spacing between levels, which may not hold — the data suggests the jump from "Sometimes" to "Often" is larger than the other steps.
+**Ordinal predictor treated as continuous.** SLQ120 has five ordered levels, not a true numeric scale. Treating it as continuous in a linear regression assumes equal spacing between levels, which may not hold — the data suggests the jump from "Sometimes" to "Often" is larger than the other steps. Treating the predictor as categorical rather than continuous would allow each sleepiness level to have its own estimated effect.
 
 ## If I Had More Time
 
