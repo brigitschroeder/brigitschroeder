@@ -23,6 +23,8 @@ NHANES 2021–2023 (August), National Center for Health Statistics.
 - **DPQ** — Patient Health Questionnaire (PHQ-9) depression screener
 - **SLQ** — Sleep Disorders questionnaire, includes self-reported sleep duration
 
+[View the analysis notebook on GitHub](https://github.com/brigitschroeder/brigitschroeder/blob/main/notebooks/001-sleep-and-depression.ipynb)
+
 ## Cleaning
 
 The sleep and depression datasets were joined on respondent ID (SEQN), keeping only participants who had answered both questionnaires. This turned out to be all depression screener respondents (6,337) — every person who completed the PHQ-9 had also completed the sleep survey.
