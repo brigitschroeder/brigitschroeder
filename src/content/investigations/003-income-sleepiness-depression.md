@@ -60,9 +60,9 @@ We build three models: depression predicted by sleepiness alone, depression pred
 | Pseudo R² | 0.080 |
 | p-value | <0.0001 |
 
-Daytime sleepiness is a highly significant predictor of depression. Each one-level increase on the sleepiness scale is associated with approximately double the odds of screening positive for depression (OR = 2.00, 95% CI [1.82, 2.21]). The confidence interval sits well above 1.0, leaving little uncertainty about the direction or magnitude of the effect.
+Daytime sleepiness is a highly significant predictor of depression. Each one-level increase on the sleepiness scale is associated with approximately double the odds of screening positive for depression (OR = 2.00, 95% CI [1.82, 2.21]). The confidence interval sits well above 1.0, leaving little uncertainty about the direction of the association.
 
-The Pseudo R² of 0.080 indicates a moderate fit by McFadden's standards (0.05–0.10). This is not directly comparable to the R² from Investigation 002 — McFadden's R² tends to run much lower than OLS R² even for well-fitting models, so the two numbers should not be compared directly.
+The Pseudo R² of 0.080 indicates a moderate fit by McFadden's standards (0.05–0.10). This is not directly comparable to the R² from Investigation 002 — McFadden's R² tends to run much lower than OLS R² even for well-fitting models, so the two numbers should not be compared directly. McFadden's R² measures improvement over a model containing only an intercept.
 
 ### Stage 2 — Income Only and Combined Model
 
@@ -97,7 +97,7 @@ The sleepiness odds ratio dropped only slightly when income was added, from 2.00
 
 ![ROC curve for Model 3](/images/003-income-sleepiness-depression-roc-curve.png)
 
-The AUC of 0.74 means the model correctly ranks a randomly chosen depressed person above a randomly chosen non-depressed person 74% of the time. This falls in the "acceptable" range (0.70–0.80) — meaningfully better than random chance (0.50), but short of the "excellent" threshold (0.80+) that would be expected of a clinical screening tool.
+The AUC of 0.74 means the model correctly ranks a randomly chosen depressed person above a randomly chosen non-depressed person 74% of the time. This falls in the range often interpreted as "acceptable" discrimination (0.70–0.80) — meaningfully better than random chance (0.50), but short of the "excellent" threshold (0.80+) that would be expected of a clinical screening tool.
 
 **Confusion Matrix**
 
