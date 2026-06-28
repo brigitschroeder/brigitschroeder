@@ -95,4 +95,4 @@ Four of the five group means sit close to the regression line. The "Never" group
 
 ## Next Investigation
 
-003 — TBD
+[003 — Income, Sleepiness, and Depression](/investigations/003-income-sleepiness-depression)

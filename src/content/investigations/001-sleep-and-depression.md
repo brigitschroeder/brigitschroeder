@@ -60,4 +60,4 @@ Several unmeasured variables could be more predictive of either outcome. Age is 
 
 ## Next Investigation
 
-002 — TBD
+[002 — Daytime Sleepiness and Depression](/investigations/002-daytime-sleepiness-and-depression)
